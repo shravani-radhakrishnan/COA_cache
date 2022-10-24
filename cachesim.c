@@ -58,8 +58,8 @@ int main(int argc, char *argv[])
         printf("\n==================================\n");
         printf("Cache type:    Direct-Mapped Cache\n");
         printf("==================================\n");
-        printf("Cache Hits:    %d\n", d_cache.hits);
-        printf("Cache Misses:  %d\n", d_cache.misses);
+        printf("Cache Hit:    %d\n", d_cache.hits);
+        printf("Cache Miss:  %d\n", d_cache.misses);
         d_cache.hitratio = (d_cache.hits/(d_cache.hits + d_cache.misses))
         printf("Cache Hits ratio",d_cache.hitratio);
         d_cache.missratio = 1 - d_cache.hitratio;
