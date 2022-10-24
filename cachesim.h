@@ -25,7 +25,10 @@ struct direct_mapped_cache {
     char data_field[NUM_BLOCKS][BLOCK_SIZE];  /* Data field; since we don't really fetch data, \\
                                                  this field doesn't really matter */
     int hits;                          /* Hit count */
-    int misses;                        /* Miss count */
+    int misses; 
+    int hitratio;
+    int missratio; 
+                          /* Miss count */
 };
 
 

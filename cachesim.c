@@ -34,7 +34,6 @@ int main(int argc, char *argv[])
     uint64_t address;
     FILE *fp;
 
-
     /* Initialization */
     for (int i=0; i<NUM_BLOCKS; i++) {
         d_cache.valid_field[i] = 0;
@@ -43,7 +42,8 @@ int main(int argc, char *argv[])
     }
     d_cache.hits = 0;
     d_cache.misses = 0;
-
+    d_cache.hitratio = 0;
+    d_cache.missratio = 0;
 
     /* Opening the memory trace file */
     fp = fopen(trace_file_name, "r");
@@ -60,6 +60,10 @@ int main(int argc, char *argv[])
         printf("==================================\n");
         printf("Cache Hits:    %d\n", d_cache.hits);
         printf("Cache Misses:  %d\n", d_cache.misses);
+        d_cache.hitratio = (d_cache.hits/(d_cache.hits + d_cache.misses))
+        printf("Cache Hits ratio",d_cache.hitratio);
+        d_cache.missratio = 1 - d_cache.hitratio;
+        printf("Cache Miss ratio",d_cache.missratio);
         printf("\n");
     }
 
