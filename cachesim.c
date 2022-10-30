@@ -88,7 +88,15 @@ int main(int argc, char *argv[])
     /* Opening the memory trace file */
     fp = fopen(trace_file_name, "r");
 		outfp = fopen("[Part-3]full_64KB-output.txt", "w");
-
+     printf(outfp,"\n==================================\n");
+        printf(outfp,"Cache type:    Direct-Mapped Cache\n");
+				printf(outfp,"Block Size:		%d bytes\n", BLOCK_SIZE);
+				printf(outfp,"Cache Size:		%d KB\n", (CACHE_SIZE / 1024));
+				printf(outfp,"File:					%s\n", trace_file_name);
+        printf(outfp,"==================================\n");
+        printf(outfp,"Cache Hits:    %d\n", d_cache.hits);
+        printf(outfp,"Cache Misses:  %d\n", d_cache.misses);
+        printf(outfp,"\n");
 
     if (strncmp(argv[1], "direct", 6)==0) { /* Simulating direct-mapped cache */
         /* Read the memory request address and access the cache */
@@ -112,8 +120,8 @@ int main(int argc, char *argv[])
         cache_hit_rate = d_cache.hits / total;
         cache_miss_rate = d_cache.misses / total;
 
-        fprintf(outfp,"Hit Rate:       %% %.2f Percent\n", cache_hit_rate * 100);
-        fprintf(outfp,"Miss Rate:      %% %.2f Percent\n", cache_miss_rate * 100);
+        fprintf(outfp,"Hit Rate:       %% %.2f Percent\n", cache_hit_rate);
+        fprintf(outfp,"Miss Rate:      %% %.2f Percent\n", cache_miss_rate);
         fprintf(outfp,"\n");
 
     }
@@ -141,8 +149,8 @@ int main(int argc, char *argv[])
         cache_hit_rate = f_cache.hits / total;
         cache_miss_rate = f_cache.misses / total;
 
-        fprintf(outfp,"Hit Rate:       %% %.2f Percent\n", cache_hit_rate * 100);
-        fprintf(outfp,"Miss Rate:      %% %.2f Percent\n", cache_miss_rate * 100);
+        fprintf(outfp,"Hit Rate:       %% %.2f Percent\n", cache_hit_rate);
+        fprintf(outfp,"Miss Rate:      %% %.2f Percent\n", cache_miss_rate);
         fprintf(outfp,"\n");
         
     }
@@ -172,8 +180,8 @@ int main(int argc, char *argv[])
         cache_hit_rate = n_cache.hits / total;
         cache_miss_rate = n_cache.misses / total;
 
-        printf("Hit Rate:       %% %.2f Percent\n", cache_hit_rate * 100);
-        printf("Miss Rate:      %% %.2f Percent\n", cache_miss_rate * 100);
+        printf("Hit Rate:       %% %.2f Percent\n", cache_hit_rate);
+        printf("Miss Rate:      %% %.2f Percent\n", cache_miss_rate);
         printf("\n");
 
     }
@@ -286,9 +294,9 @@ void direct_mapped_cache_access(struct direct_mapped_cache *cache, uint64_t addr
 /* N WAY Mapped - FUNCTION */
 void n_way_set_associative_cache_access(struct n_way_set_associative_cache *cache, uint64_t address)
 {
-    uint64_t block_addr 	= address >> (unsigned)log2(BLOCK_SIZE);
-    uint64_t index 				= block_addr % NUM_SETS;
-    uint64_t tag 					= block_addr >> (unsigned)log2(NUM_SETS);
+    uint64_t block_addr = address >> (unsigned)log2(BLOCK_SIZE);
+    uint64_t index = block_addr % NUM_SETS;
+    uint64_t tag = block_addr >> (unsigned)log2(NUM_SETS);
 
 		
 	
@@ -348,21 +356,6 @@ void n_way_set_associative_cache_access(struct n_way_set_associative_cache *cach
 
 				
 				int filled_in_tag = 0;
-				/*
-				// For each tag in the cache line, if one is empty ('0'), 
-				// then fill tag in at that position
-				for(int j =0; j < WAY_SIZE; j++){
-					if(cache->tag_field[index][j] == 0 ){
-							cache->tag_field[index][j] = tag;
-							filled_in_tag = 1;
-
-							printf("\t\t\tfilling in tag at index: %d ...\n", j);
-							printf("\t\t\tcache->tag_field[index][%d] = %llu\n", j, cache->tag_field[index][j]);
-							break;
-					}
-				}
-				*/
-
 
 				/* Else it means that none of the tags in that cache line is empty
 				// Nor does any of the tags at that position match the tag genereated
@@ -393,7 +386,7 @@ void fully_associative_cache_access(struct fully_associative_cache *cache, uint6
 	
 	uint64_t block_addr 	= address >> (unsigned)log2(BLOCK_SIZE);
   //uint64_t index 				= block_addr % NUM_BLOCKS;  // We Dont need to generate a index
-  uint64_t tag 					= block_addr >> (unsigned)log2(NUM_BLOCKS);
+  uint64_t tag 	= block_addr >> (unsigned)log2(NUM_BLOCKS);
 
 #ifdef DBG
     printf("Memory address: %llu, Block address: %llu, Index: %llu, Tag: %llu ", address, block_addr, index, tag);
